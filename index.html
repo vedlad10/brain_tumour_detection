@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Brain Tumour Detection | Medical AI Research</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Background Video -->
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+
+  <!-- Animated Background -->
+  <div id="particles-js"></div>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">NeuroScan</div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#technology">Technology</a></li>
+      <li><a href="#accuracy">Accuracy</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Advanced Brain Tumour Detection</h1>
+    <p>
+      A deep learning–based MRI analysis system designed to assist
+      medical professionals with accurate tumour classification.
+    </p>
+
+    <div class="buttons">
+      <a href="#" class="btn primary">Upload MRI Scan</a>
+      <a href="#technology" class="btn secondary">Learn More</a>
+    </div>
+  </section>
+<!-- MRI Upload Section -->
+<section class="section upload-section">
+    <h2>MRI Scan Analysis</h2>
+    <p>
+        Upload a brain MRI scan for automated tumour classification.
+        Supported formats: JPG, PNG.
+    </p>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label class="upload-box">
+            <input type="file" id="mriInput" name="file" accept="image/*" hidden>
+            <span>Select MRI Image</span>
+        </label>
+
+        <img id="preview" class="preview" />
+
+        <button type="submit" class="btn primary analyze-btn">
+            Analyze Scan
+        </button>
+    </form>
+
+    <div id="result" class="result-box"></div>
+</section>
+
+
+  <!-- About -->
+  <section id="about" class="section">
+    <h2>Clinical-Grade Research</h2>
+    <p>
+      This project focuses on automated classification of brain tumours
+      using MRI imaging and convolutional neural networks, supporting
+      clinical decision-making and research workflows.
+    </p>
+  </section>
+
+  <!-- Technology -->
+  <section id="technology" class="section dark">
+    <h2>Technology Stack</h2>
+
+    <div class="cards">
+      <div class="card">MRI Image Analysis</div>
+      <div class="card">Deep CNN & Transfer Learning</div>
+      <div class="card">VGG16 Architecture</div>
+      <div class="card">Secure Model Inference</div>
+    </div>
+  </section>
+
+  <!-- Accuracy -->
+  <section id="accuracy" class="section">
+    <h2>Model Performance</h2>
+    <p>
+      Trained on a large, curated MRI dataset with multi-class tumour labels,
+      achieving high validation accuracy and reliable generalization.
+    </p>
+
+    <div class="stats">
+      <div><span>4</span> Tumour Classes</div>
+      <div><span>12K+</span> MRI Images</div>
+      <div><span>90%+</span> Accuracy</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p>© 2025 NeuroScan Research Project</p>
+    <p>For academic & clinical research use only</p>
+  </footer>
+
+  <!-- Particle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="particles.js"></script>
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const file = document.getElementById("mriInput").files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                sessionStorage.setItem("image", URL.createObjectURL(file));
+                sessionStorage.setItem("prediction", data.predicted_class);
+                sessionStorage.setItem("confidence", data.confidence);
+                window.open("result.html", "_blank");
+            });
+    });
+</script>
+
+      
+
+</body>
+</html>

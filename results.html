@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MRI Analysis Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="result-page">
+
+    <section class="section">
+        <h2>Scan Analysis Result</h2>
+
+        <div class="result-grid">
+            <img id="scanImage" class="result-image">
+
+            <div class="result-details">
+                <p><strong>Detected Tumour:</strong> <span id="tumour"></span></p>
+                <p><strong>Confidence:</strong> <span id="conf"></span>%</p>
+
+                <div class="clinical-note">
+                    This result is generated using a deep learning model and
+                    is intended to assist medical professionals.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById("scanImage").src =
+            sessionStorage.getItem("image");
+
+        document.getElementById("tumour").innerText =
+            sessionStorage.getItem("prediction");
+
+        document.getElementById("conf").innerText =
+            (sessionStorage.getItem("confidence") * 100).toFixed(2);
+    </script>
+</body>
+
+</html>
